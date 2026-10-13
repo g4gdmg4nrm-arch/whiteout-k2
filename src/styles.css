@@ -1,0 +1,500 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #0c141c;
+  --color-ink-2: #16202b;
+  --color-snow: #e7eef2;
+  --color-ice: #9fd0e8;
+  --color-mist: #8ea0ad;
+  --color-jacket: #e4572e;
+  --color-lamp: #f6c453;
+  --color-line: rgb(231 238 242 / 0.16);
+  --font-display: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --font-sans: "Outfit", system-ui, sans-serif;
+  --radius: 1rem;
+}
+
+@layer base {
+  html,
+  body {
+    height: 100%;
+    background: var(--color-ink);
+    color: var(--color-snow);
+    font-family: var(--font-sans);
+    overflow: hidden;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+.stage {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: var(--color-ink);
+  touch-action: none;
+  user-select: none;
+}
+
+.stage canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding:
+    calc(0.75rem + env(safe-area-inset-top))
+    1rem
+    calc(0.75rem + env(safe-area-inset-bottom));
+}
+
+.hud-top,
+.hud-bottom,
+.sheet,
+.pause,
+.debrief {
+  pointer-events: auto;
+}
+
+.hud-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.readout {
+  min-width: 0;
+}
+
+.altitude {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 2.5rem;
+  line-height: 0.85;
+  letter-spacing: 0.02em;
+}
+
+.altitude span {
+  font-size: 1rem;
+  margin-left: 0.15rem;
+  color: var(--color-ice);
+}
+
+.zone {
+  margin-top: 0.25rem;
+  color: var(--color-mist);
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.meters {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.35rem 0.7rem;
+  margin-top: 0.55rem;
+  width: min(15.5rem, 62vw);
+}
+
+.meter {
+  width: auto;
+  min-width: 0;
+}
+
+.meter label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-mist);
+}
+
+.track {
+  margin-top: 0.25rem;
+  height: 0.3rem;
+  background: var(--color-line);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.track i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.track.storm i {
+  background: var(--color-ice);
+}
+
+.track.stamina i {
+  background: var(--color-lamp);
+}
+
+.track.stamina.low i {
+  background: var(--color-jacket);
+}
+
+.track.health i {
+  background: #7dcea0;
+}
+
+.track.health.hurt i {
+  background: var(--color-jacket);
+}
+
+.track.ams i {
+  background: #d7a3ad;
+}
+
+.track.ams.sick i {
+  background: var(--color-jacket);
+}
+
+.icon-btn {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-line);
+  background: rgb(12 20 28 / 0.72);
+  color: var(--color-snow);
+  display: grid;
+  place-items: center;
+  backdrop-filter: blur(8px);
+  touch-action: manipulation;
+}
+
+.icon-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.radio {
+  margin-top: 0.85rem;
+  max-width: 22rem;
+  color: var(--color-snow);
+  font-size: 0.95rem;
+  line-height: 1.4;
+  text-shadow: 0 1px 8px rgb(0 0 0 / 0.65);
+}
+
+.banner {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-lamp);
+}
+
+.hud-bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.stick {
+  width: 7.5rem;
+  height: 7.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-line);
+  background: rgb(12 20 28 / 0.45);
+  position: relative;
+  touch-action: none;
+}
+
+.knob {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin: -1.375rem 0 0 -1.375rem;
+  border-radius: 999px;
+  background: var(--color-lamp);
+  box-shadow: 0 0 18px rgb(246 196 83 / 0.45);
+}
+
+.plant {
+  width: 5.25rem;
+  height: 5.25rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-lamp);
+  background: rgb(12 20 28 / 0.72);
+  color: var(--color-lamp);
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  letter-spacing: 0.12em;
+  backdrop-filter: blur(8px);
+  touch-action: manipulation;
+  flex: 0 0 auto;
+}
+
+.plant.hot {
+  background: var(--color-jacket);
+  border-color: var(--color-jacket);
+  color: var(--color-ink);
+}
+
+.gear {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.4rem;
+  flex: 1 1 auto;
+  max-width: 8.5rem;
+}
+
+.gear-btn {
+  min-height: 2.75rem;
+  padding: 0.15rem 0.65rem;
+  border-radius: 0.85rem;
+  border: 1px solid var(--color-line);
+  background: rgb(12 20 28 / 0.78);
+  color: var(--color-snow);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  backdrop-filter: blur(8px);
+  touch-action: manipulation;
+}
+
+.gear-k {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.gear-btn small {
+  color: var(--color-mist);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+}
+
+.gear-btn.live {
+  border-color: var(--color-ice);
+  color: var(--color-ice);
+}
+
+.gear-btn.hot {
+  border-color: var(--color-jacket);
+  color: var(--color-lamp);
+}
+
+.gear-btn.wait small,
+.gear-btn.empty {
+  opacity: 0.55;
+}
+
+.next-chip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(11.4rem + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  pointer-events: none;
+  text-align: center;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ice);
+  text-shadow: 0 1px 8px rgb(0 0 0 / 0.8);
+  white-space: nowrap;
+}
+
+.sheet,
+.pause,
+.debrief {
+  position: absolute;
+  left: 1rem;
+  right: 1rem;
+  bottom: calc(1rem + env(safe-area-inset-bottom));
+  max-width: 28rem;
+  background: rgb(12 20 28 / 0.82);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.25rem 1.1rem;
+  backdrop-filter: blur(10px);
+}
+
+.pause,
+.debrief {
+  top: 50%;
+  bottom: auto;
+  transform: translateY(-50%);
+  margin-inline: auto;
+}
+
+.eyebrow {
+  color: var(--color-lamp);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 4.25rem;
+  line-height: 0.8;
+  letter-spacing: 0.02em;
+  margin: 0.35rem 0 0;
+}
+
+h1 em {
+  font-style: normal;
+  display: block;
+  font-size: 2rem;
+  color: var(--color-ice);
+  letter-spacing: 0.22em;
+}
+
+.lede {
+  margin: 0.85rem 0 0;
+  color: var(--color-snow);
+  line-height: 1.45;
+  font-size: 0.95rem;
+}
+
+.rules {
+  margin: 0.9rem 0 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.rules div {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  line-height: 1.35;
+  color: var(--color-mist);
+}
+
+.rules b {
+  color: var(--color-snow);
+  font-weight: 600;
+}
+
+.go,
+.ghost {
+  margin-top: 1rem;
+  width: 100%;
+  min-height: 3rem;
+  border-radius: 999px;
+  border: 0;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  touch-action: manipulation;
+}
+
+.go {
+  background: var(--color-jacket);
+  color: var(--color-ink);
+}
+
+.ghost {
+  background: transparent;
+  color: var(--color-snow);
+  border: 1px solid var(--color-line);
+}
+
+.best {
+  margin-top: 0.65rem;
+  color: var(--color-mist);
+  font-size: 0.8rem;
+}
+
+.keys {
+  margin-top: 0.45rem;
+  color: var(--color-mist);
+  font-size: 0.75rem;
+}
+
+.roster {
+  margin-top: 0.85rem;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.roster li {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  border-top: 1px solid var(--color-line);
+  padding-top: 0.3rem;
+}
+
+.roster .saved {
+  color: var(--color-lamp);
+}
+
+.roster .lost {
+  color: var(--color-jacket);
+}
+
+.roster .waiting {
+  color: var(--color-mist);
+}
+
+.debrief h2,
+.pause h2 {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  line-height: 0.9;
+  margin: 0.3rem 0 0;
+  letter-spacing: 0.03em;
+}
+
+@media (max-width: 420px) {
+  h1 {
+    font-size: 3.35rem;
+  }
+
+  .stick {
+    width: 6.4rem;
+    height: 6.4rem;
+  }
+
+  .plant {
+    width: 4.5rem;
+    height: 4.5rem;
+    font-size: 1rem;
+  }
+
+  .rules div {
+    grid-template-columns: 3.4rem 1fr;
+  }
+}
+
+@media (pointer: coarse) {
+  .keys {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet,
+  .pause,
+  .debrief {
+    animation: none;
+  }
+}

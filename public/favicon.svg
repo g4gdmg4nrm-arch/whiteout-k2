@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Whiteout K2">
+  <rect width="32" height="32" rx="7" fill="#0C141C"/>
+  <polygon points="3,27 16,5 29,27" fill="#9FD0E8"/>
+  <polygon points="16,5 21.5,15 16,12.5 11,17.5" fill="#E7EEF2"/>
+  <circle cx="16" cy="19.5" r="3.4" fill="#E4572E"/>
+  <circle cx="16" cy="19.5" r="1.45" fill="#F6C453"/>
+</svg>
